@@ -9,6 +9,8 @@ class PredictionRepository {
                     riskLevel: params.riskLevel,
                     riskFactors: params.customerRiskFactors,
                     lastPredictedAt: new Date(),
+                    predictionStatus: 'SUCCESS',
+                    predictionError: null,
                 },
             });
             return await tx.predictionLog.create({

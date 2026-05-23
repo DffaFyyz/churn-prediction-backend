@@ -1,8 +1,13 @@
 import { Customer, RiskLevel } from '@prisma/client';
 import { z } from 'zod';
-import { GetCustomerSchema, UpdateCustomerSchema } from './customerSchema.js';
+import {
+   CreateCustomerSchema,
+   GetCustomerSchema,
+   UpdateCustomerSchema,
+} from './customerSchema.js';
 
 export type GetCustomerSchema = z.infer<typeof GetCustomerSchema>;
+export type CreateCustomerRequest = z.infer<typeof CreateCustomerSchema>;
 export type UpdateCustomerRequest = z.infer<typeof UpdateCustomerSchema>;
 
 export interface RiskFactor {

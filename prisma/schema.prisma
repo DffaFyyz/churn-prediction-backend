@@ -27,6 +27,12 @@ enum RiskLevel {
    HIGH
 }
 
+enum PredictionStatus {
+   PENDING
+   SUCCESS
+   FAILED
+}
+
 // ==========================================
 // USER & AUTH
 // ==========================================
@@ -100,6 +106,7 @@ model Verification {
 
 model Customer {
    customerID       String     @id @db.VarChar(100)
+   fullName         String?    @db.VarChar(150)
    gender           String     @db.VarChar(20)
    SeniorCitizen    Int
    Partner          String     @db.VarChar(10)
@@ -123,8 +130,30 @@ model Customer {
    churnProbability Float      @default(0)
    riskLevel        RiskLevel?
    riskFactors      Json?
+   lastPredictedAt  DateTime?
+   predictionStatus PredictionStatus @default(PENDING)
+   predictionError  String?
    createdAt        DateTime   @default(now()) @db.Timestamp(0)
    updatedAt        DateTime   @updatedAt
 
+   predictionLogs PredictionLog[]
+
    @@map("customers")
+}
+
+model PredictionLog {
+   id               String    @id @default(cuid())
+   customerID       String    @db.VarChar(100)
+   churnProbability Float
+   riskLevel        RiskLevel
+   topFactors       Json?
+   modelVersion     String?   @db.VarChar(100)
+   threshold        Float?
+   createdAt        DateTime  @default(now()) @db.Timestamp(0)
+
+   customer Customer @relation(fields: [customerID], references: [customerID], onDelete: Cascade)
+
+   @@index([customerID])
+   @@index([createdAt])
+   @@map("prediction_logs")
 }
