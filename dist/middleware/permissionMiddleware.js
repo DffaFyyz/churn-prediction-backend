@@ -4,6 +4,8 @@ const rolePermissions = {
         'manage_customers',
         'run_prediction',
         'view_predictions',
+        'view_interventions',
+        'manage_interventions',
     ],
     MANAGER: [
         'view_customers',
@@ -11,6 +13,9 @@ const rolePermissions = {
         'run_prediction',
         'view_predictions',
         'create_intervention',
+        'view_interventions',
+        'manage_interventions',
+        'view_intervention_analytics',
         'view_analytics',
         'manage_risk_settings',
         'batch_upload_customers',
