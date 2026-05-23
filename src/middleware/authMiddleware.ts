@@ -1,0 +1,32 @@
+import { Request, Response, NextFunction } from 'express';
+import { fromNodeHeaders } from 'better-auth/node';
+import { auth } from '@/utils/auth.js';
+
+export const requireAuth = async (
+   req: Request,
+   res: Response,
+   next: NextFunction,
+) => {
+   const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+   });
+
+   if (!session) {
+      return res.status(401).json({ msg: 'Unauthorized' });
+   }
+
+   res.locals.user = session.user;
+   res.locals.session = session.session;
+
+   next();
+};
+
+declare global {
+   // eslint-disable-next-line @typescript-eslint/no-namespace
+   namespace Express {
+      interface Locals {
+         user: typeof auth.$Infer.Session.user;
+         session: typeof auth.$Infer.Session.session;
+      }
+   }
+}
