@@ -21,6 +21,7 @@ class CustomerRepository {
         }
         if (search) {
             where.OR = [
+                { fullName: { contains: search, mode: 'insensitive' } },
                 { customerID: { contains: search, mode: 'insensitive' } },
                 { Contract: { contains: search, mode: 'insensitive' } },
                 { InternetService: { contains: search, mode: 'insensitive' } },
@@ -43,10 +44,29 @@ class CustomerRepository {
             where: { customerID: id },
         });
     }
+    async create(data) {
+        return await prisma.customer.create({
+            data,
+        });
+    }
     async update(id, data) {
         return await prisma.customer.update({
             where: { customerID: id },
             data,
+        });
+    }
+    async markPredictionFailed(id, message) {
+        return await prisma.customer.update({
+            where: { customerID: id },
+            data: {
+                predictionStatus: 'FAILED',
+                predictionError: message,
+            },
+        });
+    }
+    async delete(id) {
+        return await prisma.customer.delete({
+            where: { customerID: id },
         });
     }
 }

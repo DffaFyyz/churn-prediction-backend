@@ -9,7 +9,6 @@ const router: Router = express.Router();
 router.get(
    '/by-contract',
    requireAuth,
-   requirePermission('view_analytics'),
    getByContract,
 );
 

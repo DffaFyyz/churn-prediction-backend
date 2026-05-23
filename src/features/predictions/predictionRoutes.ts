@@ -11,17 +11,17 @@ const router: Router = express.Router();
 
 router.post(
    '/:customerID/run',
-   // requireAuth,
+   requireAuth,
    runPrediction,
 );
 router.get(
    '/history',
-   // requireAuth,
+   requireAuth,
    getPredictionHistory,
 );
 router.get(
    '/distribution',
-   // requireAuth,
+   requireAuth,
    getPredictionDistribution,
 );
 

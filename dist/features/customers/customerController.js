@@ -1,4 +1,4 @@
-import { GetCustomerSchema, UpdateCustomerSchema } from './customerSchema.js';
+import { CreateCustomerSchema, GetCustomerSchema, UpdateCustomerSchema, } from './customerSchema.js';
 import { customerService } from './customerService.js';
 export const getCustomers = async (req, res) => {
     const query = GetCustomerSchema.parse(req.query);
@@ -16,6 +16,14 @@ export const getCustomerById = async (req, res) => {
     }
     res.status(200).json(result);
 };
+export const createCustomer = async (req, res) => {
+    const validation = CreateCustomerSchema.safeParse(req.body);
+    if (!validation.success) {
+        return res.status(400).json({ errors: validation.error.format() });
+    }
+    const result = await customerService.createCustomer(validation.data);
+    res.status(201).json(result);
+};
 export const updateCustomer = async (req, res) => {
     const id = req.params.id;
     const validation = UpdateCustomerSchema.safeParse(req.body);
@@ -24,4 +32,9 @@ export const updateCustomer = async (req, res) => {
     }
     const result = await customerService.updateCustomer(validation.data, id);
     res.status(200).json(result);
+};
+export const deleteCustomer = async (req, res) => {
+    const id = req.params.id;
+    await customerService.deleteCustomer(id);
+    res.status(200).json({ ok: true });
 };
