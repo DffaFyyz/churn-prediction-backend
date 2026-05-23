@@ -2,7 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { UserRole } from '@prisma/client';
 
 const rolePermissions: Record<UserRole, string[]> = {
-   CS_AGENT: ['view_customers', 'run_prediction', 'view_predictions'],
+   CS_AGENT: [
+      'view_customers',
+      'manage_customers',
+      'run_prediction',
+      'view_predictions',
+   ],
    MANAGER: [
       'view_customers',
       'manage_customers',
